@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramen POS System - API Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        accent: '#ef4444',
+                        dark: '#1f2937',
+                        light: '#f8fafc'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            color: #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .endpoint-header {
+            background: #1e293b;
+            color: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: monospace;
+            position: relative;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .method-get {
+            color: #10b981;
+        }
+
+        .method-post {
+            color: #f59e0b;
+        }
+
+        .method-put {
+            color: #3b82f6;
+        }
+
+        .method-delete {
+            color: #ef4444;
+        }
+
+        .hljs {
+            background: transparent !important;
+            padding: 0 !important;
+        }
+
+        .role-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-weight: 600;
+        }
+
+        .role-cashier {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .role-manager {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+
+        .role-admin {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+
+        @media (max-width: 768px) {
+            .endpoint-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .endpoint-header .copy-btn {
+                position: static;
+                align-self: flex-end;
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Container -->
+    <div class="container mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
+
+        <!-- Sidebar -->
+        <aside class="lg:w-1/4 bg-white shadow rounded-lg p-4 lg:p-6 sticky top-24 self-start">
+            <h2 class="text-lg font-bold mb-4">API Documentation</h2>
+            <ul class="space-y-2">
+                <li><a href="#overview" class="nav-link block py-2 px-4 rounded hover:bg-blue-50">Overview</a></li>
+                <li><a href="#authentication"
+                        class="nav-link block py-2 px-4 rounded hover:bg-blue-50">Authentication</a></li>
+                <li><a href="#menu" class="nav-link block py-2 px-4 rounded hover:bg-blue-50">Menu Endpoints</a></li>
+                <li><a href="#orders" class="nav-link block py-2 px-4 rounded hover:bg-blue-50">Order Endpoints</a></li>
+                <li><a href="#users" class="nav-link block py-2 px-4 rounded hover:bg-blue-50">User Endpoints</a></li>
+                <li><a href="#models" class="nav-link block py-2 px-4 rounded hover:bg-blue-50">Data Models</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:w-3/4 space-y-8">
+
+            <section id="overview" class="content-section bg-white rounded-lg shadow p-6 mt-8 mb-8 active">
+                <h2 class="text-2xl font-bold mb-4 text-dark">Ramen POS System API</h2>
+                <p class="text-gray-700 mb-4">
+                    A comprehensive backend API for a Ramen Shop Point-of-Sale (POS) system.
+                    This API handles menu management, order processing, user authentication,
+                    and role-based access control.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h3 class="font-semibold text-blue-800">Base URL</h3>
+                        <p class="mt-2">https://api.ramenpos.com/v1</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <h3 class="font-semibold text-green-800">Authentication</h3>
+                        <p class="mt-2">JWT Bearer Token</p>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-lg">
+                        <h3 class="font-semibold text-purple-800">Content Type</h3>
+                        <p class="mt-2">application/json</p>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mb-3">User Roles</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="py-2 px-4 border-b">Role</th>
+                                <th class="py-2 px-4 border-b">Permissions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="py-2 px-4 border-b font-medium">Cashier</td>
+                                <td class="py-2 px-4 border-b">Create orders, view personal orders and stats</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b font-medium">Manager</td>
+                                <td class="py-2 px-4 border-b">All cashier permissions + menu management, view all
+                                    orders/users</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-4 border-b font-medium">Admin</td>
+                                <td class="py-2 px-4 border-b">Full system access including user management</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Authentication Section -->
+            <section id="authentication" class="content-section bg-white rounded-lg shadow p-6 mb-8">
+                <!-- Login Endpoint -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Login Endpoint</h1>
+                    <div class="endpoint-header">
+                        <span class="method-post">POST</span>
+                        <span>&nbsp;/api/auth/login</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Authenticates user and returns JWT token</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Body:</strong> username (string, required), password (string, required, min 6 chars)
+                        </li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+    "username": "cashier1",
+    "password": "password123"
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "user": {
+      "id": 1,
+      "username": "cashier1",
+      "role": "cashier",
+      "is_active": true
+    }
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Profile Endpoint -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Profile Endpoint</h1>
+                    <div class="endpoint-header">
+                        <span class="method-get">GET</span>
+                        <span>&nbsp;/api/auth/profile</span>
+                        <span class="role-badge role-cashier">Cashier+</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Retrieves current user's profile information</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-http">GET /api/auth/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "data": {
+    "user": {
+      "id": 1,
+      "username": "cashier1",
+      "role": "cashier",
+      "is_active": true,
+      "last_login": "2024-01-15T10:30:00.000Z"
+    }
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Validate Token Endpoint -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Validate Token</h1>
+                    <div class="endpoint-header">
+                        <span class="method-get">GET</span>
+                        <span>&nbsp;/api/auth/validate</span>
+                        <span class="role-badge role-cashier">Cashier+</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Validates the current JWT token</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-http">GET /api/auth/validate
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "message": "Token is valid",
+  "data": {
+    "user": {
+      "id": 1,
+      "username": "cashier1",
+      "role": "cashier",
+      "is_active": true
+    }
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Change Password Endpoint -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Change Password</h1>
+                    <div class="endpoint-header">
+                        <span class="method-put">PUT</span>
+                        <span>&nbsp;/api/auth/change-password</span>
+                        <span class="role-badge role-cashier">Cashier+</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Changes the current user's password</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                        <li><strong>Body:</strong> currentPassword (string, required), newPassword (string, required,
+                            min 6 chars)</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "currentPassword": "oldpassword123",
+  "newPassword": "newpassword456"
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "message": "Password updated successfully"
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Menu Endpoints Section -->
+            <section id="menu" class="content-section bg-white rounded-lg shadow p-6 mb-8">
+                
+                <!-- Get All Menu Items -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Get All Items</h1>
+                    <div class="endpoint-header">
+                        <span class="method-get">GET</span>
+                        <span>&nbsp;/api/menu</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Retrieves all menu items with optional filtering (Public endpoint)</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Query:</strong> category (string, optional), available (boolean, optional)</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-http">GET /api/menu?category=ramen&available=true</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "data": {
+    "menu_items": [
+      {
+        "id": 1,
+        "name": "Tonkotsu Ramen",
+        "description": "Rich pork bone broth",
+        "price": 12.99,
+        "category": "ramen",
+        "is_available": true,
+        "spicy_level": 0,
+        "createdAt": "2024-01-01T00:00:00.000Z",
+        "updatedAt": "2024-01-01T00:00:00.000Z"
+      }
+    ]
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Get Menu Item by ID -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Get Item By ID</h1>
+                    <div class="endpoint-header">
+                        <span class="method-get">GET</span>
+                        <span>&nbsp;/api/menu/:id</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Retrieves a specific menu item by ID (Public endpoint)</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Path:</strong> id (integer, required) - Menu item ID</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-http">GET /api/menu/1</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "data": {
+    "menu_item": {
+      "id": 1,
+      "name": "Tonkotsu Ramen",
+      "description": "Rich pork bone broth",
+      "price": 12.99,
+      "category": "ramen",
+      "is_available": true,
+      "spicy_level": 0
+    }
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Create Menu Item -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Create New Item</h1>
+                    <div class="endpoint-header">
+                        <span class="method-post">POST</span>
+                        <span>&nbsp;/api/menu</span>
+                        <span class="role-badge role-manager">Manager+</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Creates new menu item</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                        <li><strong>Body:</strong> name, description, price, category, is_available, spicy_level</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "name": "Spicy Miso Ramen",
+  "description": "Spicy miso-based broth",
+  "price": 13.99,
+  "category": "ramen",
+  "is_available": true,
+  "spicy_level": 3
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "message": "Menu item created successfully",
+  "data": {
+    "menu_item": {
+      "id": 5,
+      "name": "Spicy Miso Ramen",
+      "description": "Spicy miso-based broth",
+      "price": 13.99,
+      "category": "ramen",
+      "is_available": true,
+      "spicy_level": 3
+    }
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Update Menu Item -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Update Item</h1>
+                    <div class="endpoint-header">
+                        <span class="method-put">PUT</span>
+                        <span>&nbsp;/api/menu/:id</span>
+                        <span class="role-badge role-manager">Manager+</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Updates an existing menu item</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                        <li><strong>Path:</strong> id (integer, required) - Menu item ID</li>
+                        <li><strong>Body:</strong> name, description, price, category, is_available, spicy_level (all
+                            optional)</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "name": "Updated Ramen",
+  "price": 14.99,
+  "is_available": false
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "message": "Menu item updated successfully",
+  "data": {
+    "menu_item": {
+      "id": 1,
+      "name": "Updated Ramen",
+      "description": "Rich pork bone broth",
+      "price": 14.99,
+      "category": "ramen",
+      "is_available": false,
+      "spicy_level": 0
+    }
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Delete Menu Item -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Delete Item</h1>
+                    <div class="endpoint-header">
+                        <span class="method-delete">DELETE</span>
+                        <span>&nbsp;/api/menu/:id</span>
+                        <span class="role-badge role-manager">Manager+</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Deletes a menu item</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                        <li><strong>Path:</strong> id (integer, required) - Menu item ID</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-http">DELETE /api/menu/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "message": "Menu item deleted successfully"
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Order Endpoints Section -->
+            <section id="orders" class="content-section bg-white rounded-lg shadow p-6 mb-8">
+
+                <!-- Create Order -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Create Order</h1>
+                    <div class="endpoint-header">
+                        <span class="method-post">POST</span>
+                        <span>&nbsp;/api/orders</span>
+                        <span class="role-badge role-cashier">Cashier+</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Creates new order</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                        <li><strong>Body:</strong> items, customer_name, order_type, special_instructions</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "items": [
+    {
+      "menu_item_id": 1,
+      "quantity": 2
+    }
+  ],
+  "customer_name": "John Doe",
+  "order_type": "dine-in",
+  "special_instructions": "Extra noodles please"
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "message": "Order created successfully",
+  "data": {
+    "order": {
+      "id": 1,
+      "order_number": "ORD-001",
+      "total_amount": 25.98,
+      "status": "completed",
+      "customer_name": "John Doe",
+      "order_type": "dine-in",
+      "cashier_id": 1,
+      "special_instructions": "Extra noodles please",
+      "created_at": "2024-01-15T10:30:00.000Z",
+      "order_items": [
+        {
+          "id": 1,
+          "quantity": 2,
+          "price": 12.99,
+          "menu_item": {
+            "id": 1,
+            "name": "Tonkotsu Ramen",
+            "description": "Rich pork bone broth"
+          }
+        }
+      ],
+      "cashier": {
+        "id": 1,
+        "username": "cashier1"
+      }
+    }
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Get All Orders -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Get All Orders</h1>
+                    <div class="endpoint-header">
+                        <span class="method-get">GET</span>
+                        <span>&nbsp;/api/orders</span>
+                        <span class="role-badge role-manager">Manager+ sees all</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Retrieves all orders (Managers see all, Cashiers see only their own)
+                    </p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-http">GET /api/orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "data": {
+    "orders": [
+      {
+        "id": 1,
+        "order_number": "ORD-001",
+        "total_amount": 25.98,
+        "status": "completed",
+        "customer_name": "John Doe",
+        "order_type": "dine-in",
+        "created_at": "2024-01-15T10:30:00.000Z",
+        "order_items": [...],
+        "cashier": {
+          "id": 1,
+          "username": "cashier1"
+        }
+      }
+    ]
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Get My Orders -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Get Your Orders</h1>
+                    <div class="endpoint-header">
+                        <span class="method-get">GET</span>
+                        <span>&nbsp;/api/orders/my-orders</span>
+                        <span class="role-badge role-cashier">Cashier+</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Retrieves current user's orders</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-http">GET /api/orders/my-orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "data": {
+    "orders": [
+      {
+        "id": 1,
+        "order_number": "ORD-001",
+        "total_amount": 25.98,
+        "status": "completed",
+        "customer_name": "John Doe",
+        "order_type": "dine-in",
+        "created_at": "2024-01-15T10:30:00.000Z"
+      }
+    ]
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Get Order by ID -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Get Order By ID</h1>
+                    <div class="endpoint-header">
+                        <span class="method-get">GET</span>
+                        <span>&nbsp;/api/orders/:id</span>
+                        <span class="role-badge role-cashier">Cashier+ (own orders only)</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Retrieves specific order by ID (Cashiers can only access their own
+                        orders)</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                        <li><strong>Path:</strong> id (integer, required) - Order ID</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-http">GET /api/orders/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "data": {
+    "order": {
+      "id": 1,
+      "order_number": "ORD-001",
+      "total_amount": 25.98,
+      "status": "completed",
+      "customer_name": "John Doe",
+      "order_type": "dine-in",
+      "cashier_id": 1,
+      "special_instructions": "Extra noodles please",
+      "created_at": "2024-01-15T10:30:00.000Z",
+      "order_items": [...],
+      "cashier": {
+        "id": 1,
+        "username": "cashier1"
+      }
+    }
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Cancel Order -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Cancel Order</h1>
+                    <div class="endpoint-header">
+                        <span class="method-put">PUT</span>
+                        <span>&nbsp;/api/orders/:id/cancel</span>
+                        <span class="role-badge role-manager">Manager+</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Cancels an order</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                        <li><strong>Path:</strong> id (integer, required) - Order ID</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-http">PUT /api/orders/1/cancel
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "message": "Order cancelled successfully",
+  "data": {
+    "order": {
+      "id": 1,
+      "order_number": "ORD-001",
+      "status": "cancelled",
+      "updated_at": "2024-01-15T10:35:00.000Z"
+    }
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- User Endpoints Section -->
+            <section id="users" class="content-section bg-white rounded-lg shadow p-6 mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-dark">User Endpoints</h2>
+
+                <!-- Get All Users -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Get All Users</h1>
+                    <div class="endpoint-header">
+                        <span class="method-get">GET</span>
+                        <span>&nbsp;/api/users</span>
+                        <span class="role-badge role-manager">Manager+</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Retrieves all users (sensitive information excluded)</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-http">GET /api/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "data": {
+    "users": [
+      {
+        "id": 1,
+        "username": "cashier1",
+        "role": "cashier",
+        "is_active": true,
+        "last_login": "2024-01-15T10:30:00.000Z",
+        "created_at": "2024-01-01T00:00:00.000Z"
+      }
+    ]
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Get User by ID -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Get User By ID</h1>
+                    <div class="endpoint-header">
+                        <span class="method-get">GET</span>
+                        <span>&nbsp;/api/users/:id</span>
+                        <span class="role-badge role-manager">Manager+</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Retrieves specific user by ID with their orders</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                        <li><strong>Path:</strong> id (integer, required) - User ID</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-http">GET /api/users/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "data": {
+    "user": {
+      "id": 1,
+      "username": "cashier1",
+      "role": "cashier",
+      "is_active": true,
+      "last_login": "2024-01-15T10:30:00.000Z",
+      "created_at": "2024-01-01T00:00:00.000Z",
+      "orders": [
+        {
+          "id": 1,
+          "order_number": "ORD-001",
+          "total_amount": 25.98,
+          "status": "completed",
+          "created_at": "2024-01-15T10:30:00.000Z"
+        }
+      ]
+    }
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Get My Stats -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Get Your Stats</h1>
+                    <div class="endpoint-header">
+                        <span class="method-get">GET</span>
+                        <span>&nbsp;/api/users/stats/my-stats</span>
+                        <span class="role-badge role-cashier">Cashier+</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Retrieves current user's statistics</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-http">GET /api/users/stats/my-stats
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "data": {
+    "stats": {
+      "today_orders": 5,
+      "today_sales": 64.95,
+      "total_orders": 127
+    }
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Get User Activity -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Get User Activity</h1>
+                    <div class="endpoint-header">
+                        <span class="method-get">GET</span>
+                        <span>&nbsp;/api/users/:id/activity</span>
+                        <span class="role-badge role-manager">Manager+</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Retrieves user activity logs and statistics</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                        <li><strong>Path:</strong> id (integer, required) - User ID</li>
+                        <li><strong>Query:</strong> days (integer, optional, default: 30) - Number of days to include
+                        </li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-http">GET /api/users/1/activity?days=7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "data": {
+    "user": {
+      "id": 1,
+      "username": "cashier1",
+      "role": "cashier",
+      "is_active": true
+    },
+    "activity": {
+      "period": "7 days",
+      "orders": [...],
+      "statistics": {
+        "total_orders": 23,
+        "total_sales": 298.75,
+        "avg_order_value": 12.99
+      }
+    }
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Create User -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Create New Account</h1>
+                    <div class="endpoint-header">
+                        <span class="method-post">POST</span>
+                        <span>&nbsp;/api/users</span>
+                        <span class="role-badge role-admin">Admin only</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Creates a new user</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                        <li><strong>Body:</strong> username, password, role, is_active</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "username": "newuser",
+  "password": "password123",
+  "role": "cashier",
+  "is_active": true
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "message": "User created successfully",
+  "data": {
+    "user": {
+      "id": 5,
+      "username": "newuser",
+      "role": "cashier",
+      "is_active": true,
+      "created_at": "2024-01-15T10:30:00.000Z"
+    }
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Update User -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Update User Profile</h1>
+                    <div class="endpoint-header">
+                        <span class="method-put">PUT</span>
+                        <span>&nbsp;/api/users/:id</span>
+                        <span class="role-badge role-manager">Manager+</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Updates user information</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                        <li><strong>Path:</strong> id (integer, required) - User ID</li>
+                        <li><strong>Body:</strong> username, password, role, is_active (all optional)</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "username": "updateduser",
+  "role": "manager",
+  "is_active": false
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "message": "User updated successfully",
+  "data": {
+    "user": {
+      "id": 1,
+      "username": "updateduser",
+      "role": "manager",
+      "is_active": false,
+      "updated_at": "2024-01-15T10:30:00.000Z"
+    }
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Delete User -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Delete User</h1>
+                    <div class="endpoint-header">
+                        <span class="method-delete">DELETE</span>
+                        <span>&nbsp;/api/users/:id</span>
+                        <span class="role-badge role-admin">Admin only</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Deletes a user (cannot delete users with existing orders)</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                        <li><strong>Path:</strong> id (integer, required) - User ID</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-http">DELETE /api/users/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "message": "User deleted successfully"
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Toggle User Active Status -->
+                <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Toggle Active Status</h1>
+                    <div class="endpoint-header">
+                        <span class="method-put">PUT</span>
+                        <span>&nbsp;/api/users/:id/toggle-active</span>
+                        <span class="role-badge role-manager">Manager+</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <p class="text-gray-700 mb-3">Toggles user active status</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                        <li><strong>Path:</strong> id (integer, required) - User ID</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-http">PUT /api/users/1/toggle-active
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+  "success": true,
+  "message": "User deactivated successfully",
+  "data": {
+    "user": {
+      "id": 1,
+      "username": "cashier1",
+      "is_active": false
+    }
+  }
+}</code></pre>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Data Models Section -->
+            <section id="models" class="content-section bg-white rounded-lg shadow p-6">
+                <h2 class="text-2xl font-bold mb-4 text-dark">Data Models</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- User Model -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2">User Object</h3>
+                        <div class="code-block">
+                            <pre><code class="language-json">{
+  "id": 1,
+  "username": "cashier1",
+  "role": "cashier",
+  "is_active": true,
+  "last_login": "2024-01-15T10:30:00.000Z",
+  "created_at": "2024-01-01T00:00:00.000Z",
+  "updated_at": "2024-01-15T10:30:00.000Z"
+}</code></pre>
+                            <button class="copy-btn">Copy</button>
+                        </div>
+                    </div>
+
+                    <!-- MenuItem Model -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2">MenuItem Object</h3>
+                        <div class="code-block">
+                            <pre><code class="language-json">{
+  "id": 1,
+  "name": "Tonkotsu Ramen",
+  "description": "Rich pork bone broth",
+  "price": 12.99,
+  "category": "ramen",
+  "is_available": true,
+  "spicy_level": 0,
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "updatedAt": "2024-01-01T00:00:00.000Z"
+}</code></pre>
+                            <button class="copy-btn">Copy</button>
+                        </div>
+                    </div>
+
+                    <!-- Order Model -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2">Order Object</h3>
+                        <div class="code-block">
+                            <pre><code class="language-json">{
+  "id": 1,
+  "order_number": "ORD-001",
+  "total_amount": 25.98,
+  "status": "completed",
+  "customer_name": "John Doe",
+  "order_type": "dine-in",
+  "cashier_id": 1,
+  "special_instructions": "Extra noodles",
+  "created_at": "2024-01-15T10:30:00.000Z",
+  "updated_at": "2024-01-15T10:30:00.000Z"
+}</code></pre>
+                            <button class="copy-btn">Copy</button>
+                        </div>
+                    </div>
+
+                    <!-- OrderItem Model -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-2">OrderItem Object</h3>
+                        <div class="code-block">
+                            <pre><code class="language-json">{
+  "id": 1,
+  "order_id": 1,
+  "menu_item_id": 1,
+  "quantity": 2,
+  "price": 12.99,
+  "menu_item": {
+    "id": 1,
+    "name": "Tonkotsu Ramen",
+    "description": "Rich pork bone broth"
+  }
+}</code></pre>
+                            <button class="copy-btn">Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Initialize syntax highlighting
+        hljs.highlightAll();
+
+        // Accordion behavior
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        // Show overview section by default
+        document.getElementById('overview').classList.add('active');
+        navLinks[0].classList.add('bg-blue-100', 'text-blue-800');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+
+                sections.forEach(sec => sec.classList.remove('active'));
+                document.getElementById(targetId).classList.add('active');
+
+                navLinks.forEach(l => l.classList.remove('bg-blue-100', 'text-blue-800'));
+                link.classList.add('bg-blue-100', 'text-blue-800');
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Copy button functionality for all code blocks and endpoint headers
+        document.querySelectorAll('.code-block, .endpoint-header').forEach(block => {
+            const btn = document.createElement('button');
+            btn.innerText = 'Copy';
+            btn.className = 'copy-btn';
+            btn.onclick = () => {
+                let textToCopy = '';
+
+                if (block.classList.contains('endpoint-header')) {
+                    // For endpoint headers, copy the method and path
+                    const method = block.querySelector('.method-get, .method-post, .method-put, .method-delete');
+                    const path = block.querySelector('span:nth-child(2)'); // The second span contains the path
+                    textToCopy = `${method ? method.textContent + ' ' : ''}${path ? path.textContent : ''}`;
+                } else {
+                    // For code blocks, copy the code content
+                    const codeElement = block.querySelector('code');
+                    textToCopy = codeElement ? codeElement.textContent : block.querySelector('pre').textContent;
+                }
+
+                navigator.clipboard.writeText(textToCopy.trim());
+                btn.innerText = 'Copied!';
+                setTimeout(() => btn.innerText = 'Copy', 1500);
+            };
+
+            // Only add button if it doesn't already have one
+            if (!block.querySelector('.copy-btn')) {
+                block.appendChild(btn);
+            }
+        });
+    </script>
+</body>
+
+</html>
