@@ -132,9 +132,50 @@
             }
         }
     </style>
+
+.mobile-message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            color: #333;
+        }
+
+        .mobile-message h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .mobile-message p {
+            font-size: 16px;
+            color: #777;
+        }
+
+        /* Copy button styling */
+        .copy-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .copy-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
 </head>
 
 <body class="bg-gray-50 text-gray-800">
+
 
     <!-- Container -->
     <div class="container mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
@@ -1309,6 +1350,34 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
     <script>
         // Initialize syntax highlighting
         hljs.highlightAll();
+
+                // Prevent website from opening on mobile devices
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        if (isMobileDevice()) {
+            document.body.innerHTML = `
+                <div class="mobile-message">
+                    <div>
+                        <h1>Access Restricted</h1>
+                        <p>This website is optimized for desktop use. Please access it on a laptop or desktop computer for the best experience.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Copy button functionality
+        document.querySelector('.copy-btn').addEventListener('click', () => {
+            const textToCopy = document.getElementById('text-to-copy').innerText;
+            navigator.clipboard.writeText(textToCopy)
+                .then(() => {
+                    alert('Text copied to clipboard!');
+                })
+                .catch(err => {
+                    console.error('Failed to copy text: ', err);
+                });
+        });
 
         // Accordion behavior
         const sections = document.querySelectorAll('.content-section');
