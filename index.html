@@ -175,6 +175,7 @@
                 <li><a href="#menu" class="nav-link block py-2 px-4 rounded hover:bg-blue-50">Menu Endpoints</a></li>
                 <li><a href="#orders" class="nav-link block py-2 px-4 rounded hover:bg-blue-50">Order Endpoints</a></li>
                 <li><a href="#users" class="nav-link block py-2 px-4 rounded hover:bg-blue-50">User Endpoints</a></li>
+                <li><a href="#stock" class="nav-link block py-2 px-4 rounded hover:bg-blue-50">Stock Endpoints</a></li>
                 <li><a href="#models" class="nav-link block py-2 px-4 rounded hover:bg-blue-50">Data Models</a></li>
             </ul>
         </aside>
@@ -1246,6 +1247,170 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
                     </div>
                 </div>
             </section>
+
+            <section id="stock" class="content-section bg-white rounded-lg shadow p-6 mb-8 z-50">
+
+    <!-- Get Low Stock Items Endpoint -->
+    <div class="mb-8">
+        <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">
+            > Get Low Stock Items
+        </h1>
+        <div class="endpoint-header">
+            <span class="method-get">GET</span>
+            <span>&nbsp;/api/stock/low-stock</span>
+            <span class="role-badge role-manager">Manager+</span>
+        </div>
+        <p class="text-gray-700 mb-3">
+            Returns all menu items that are running low on stock based on a configurable threshold
+        </p>
+
+        <h5 class="font-medium mb-2">Parameters:</h5>
+        <ul class="list-disc pl-5 mb-3 text-gray-700">
+            <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+            <li><strong>Query:</strong> threshold (integer, optional, default: 10) - Stock level threshold</li>
+        </ul>
+
+        <h5 class="font-medium mb-2">Sample Request:</h5>
+        <div class="code-block">
+            <pre><code class="language-http">GET /api/stock/low-stock?threshold=5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+        </div>
+
+        <h5 class="font-medium mb-2">Returned Value:</h5>
+        <div class="code-block">
+            <pre><code class="language-json">{
+"success": true,
+"data": {
+    "low_stock_items": [
+        {
+            "id": 1,
+            "name": "Chicken Burger",
+            "description": "Grilled chicken with fresh vegetables",
+            "price": 12.99,
+            "category": "Burgers",
+            "is_available": true,
+            "spicy_level": 0,
+            "current_stock": 5,
+            "createdAt": "2024-01-15T10:00:00.000Z",
+            "updatedAt": "2024-01-15T10:30:00.000Z"
+        }
+    ],
+    "threshold": 5
+}
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- Update Stock Endpoint -->
+    <div class="mb-8">
+        <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">
+            > Update Stock
+        </h1>
+        <div class="endpoint-header">
+            <span class="method-put">PUT</span>
+            <span>&nbsp;/api/stock/stock/:id</span>
+            <span class="role-badge role-manager">Manager+</span>
+        </div>
+        <p class="text-gray-700 mb-3">Update the current stock level for a specific menu item</p>
+
+        <h5 class="font-medium mb-2">Parameters:</h5>
+        <ul class="list-disc pl-5 mb-3 text-gray-700">
+            <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+            <li><strong>Path:</strong> id (integer, required) - Menu item ID</li>
+            <li><strong>Body:</strong> stock (integer, required, min: 0) - New stock quantity</li>
+        </ul>
+
+        <h5 class="font-medium mb-2">Sample Request:</h5>
+        <div class="code-block">
+            <pre><code class="language-http">PUT /api/stock/stock/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+"stock": 25
+}</code></pre>
+        </div>
+
+        <h5 class="font-medium mb-2">Returned Value:</h5>
+        <div class="code-block">
+            <pre><code class="language-json">{
+"success": true,
+"message": "Stock updated successfully",
+"data": {
+    "menu_item": {
+        "id": 1,
+        "name": "Chicken Burger",
+        "current_stock": 25
+    }
+}
+}</code></pre>
+        </div>
+
+        <h5 class="font-medium mb-2">Error Responses:</h5>
+        <div class="code-block">
+            <pre><code class="language-json">// 400 Bad Request - Stock cannot be negative
+{
+"success": false,
+"message": "Stock cannot be negative"
+}
+
+// 404 Not Found - Menu item not found
+{
+"success": false,
+"message": "Menu item not found"
+}</code></pre>
+        </div>
+    </div>
+
+    <!-- Get Stock by ID Endpoint -->
+    <div class="mb-8">
+        <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">
+            > Get Stock by ID
+        </h1>
+        <div class="endpoint-header">
+            <span class="method-get">GET</span>
+            <span>&nbsp;/api/stock/stock/:id</span>
+            <span class="role-badge role-manager">Manager+</span>
+        </div>
+        <p class="text-gray-700 mb-3">Retrieve the current stock level for a specific menu item</p>
+
+        <h5 class="font-medium mb-2">Parameters:</h5>
+        <ul class="list-disc pl-5 mb-3 text-gray-700">
+            <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+            <li><strong>Path:</strong> id (integer, required) - Menu item ID</li>
+        </ul>
+
+        <h5 class="font-medium mb-2">Sample Request:</h5>
+        <div class="code-block">
+            <pre><code class="language-http">GET /api/stock/stock/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+        </div>
+
+        <h5 class="font-medium mb-2">Returned Value:</h5>
+        <div class="code-block">
+            <pre><code class="language-json">{
+"success": true,
+"data": {
+    "menu_item_id": 1,
+    "name": "Chicken Burger",
+    "current_stock": 15
+}
+}</code></pre>
+        </div>
+
+        <h5 class="font-medium mb-2">Error Response:</h5>
+        <div class="code-block">
+            <pre><code class="language-json">// 404 Not Found - Menu item not found
+{
+"success": false,
+"message": "Menu item not found"
+}</code></pre>
+        </div>
+    </div>
+
+
+</section>
+
 
             <!-- Data Models Section -->
             <section id="models" class="content-section bg-white rounded-lg shadow p-6">
