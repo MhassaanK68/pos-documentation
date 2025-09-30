@@ -641,7 +641,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
                     <h5 class="font-medium mb-2">Parameters:</h5>
                     <ul class="list-disc pl-5 mb-3 text-gray-700">
                         <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
-                        <li><strong>Body:</strong> items, customer_name, order_type, special_instructions</li>
+                        <li><strong>Body:</strong> items, customer_name, order_type, special_instructions, payment_method</li>
                     </ul>
 
                     <h5 class="font-medium mb-2">Sample Request:</h5>
@@ -656,6 +656,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
   "customer_name": "John Doe",
   "order_type": "dine-in",
   "special_instructions": "Extra noodles please"
+  "payment_method": "card"
 }</code></pre>
 
                     </div>
@@ -675,6 +676,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
       "order_type": "dine-in",
       "cashier_id": 1,
       "special_instructions": "Extra noodles please",
+      "payment_method": "card",
       "created_at": "2024-01-15T10:30:00.000Z",
       "order_items": [
         {
@@ -836,6 +838,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
       "order_type": "dine-in",
       "cashier_id": 1,
       "special_instructions": "Extra noodles please",
+      "payment_method": "card",
       "created_at": "2024-01-15T10:30:00.000Z",
       "order_items": [...],
       "cashier": {
@@ -1532,6 +1535,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
   "order_type": "dine-in",
   "cashier_id": 1,
   "special_instructions": "Extra noodles",
+  "payment_method": "card",
   "created_at": "2024-01-15T10:30:00.000Z",
   "updated_at": "2024-01-15T10:30:00.000Z"
 }</code></pre>
