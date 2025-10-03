@@ -959,8 +959,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
                         Period</h1>
                     <div class="endpoint-header">
                         <span class="method-get">GET</span>
-                        <span>&nbsp;/api/orders/analytics/period</span>
-                        <span class="role-badge role-cashier">Cashier+</span>
+                        <span>&nbsp;/api/orders/filter</span>
+                        <span class="role-badge role-admin">Admin+</span>
                     </div>
                     <p class="text-gray-700 mb-3">Retrieves orders filtered by time period or specific date</p>
 
@@ -973,16 +973,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
                     <h5 class="font-medium mb-2">Sample Requests:</h5>
                     <div class="code-block">
                         <pre><code class="language-bash"># Get today's orders
-GET /api/orders/analytics/period?period=today
+GET /api/orders/filter?period=today
 
 # Get last 7 days orders
-GET /api/orders/analytics/period?period=7days
+GET /api/orders/filter?period=7days
 
 # Get last 30 days orders
-GET /api/orders/analytics/period?period=30days
+GET /api/orders/filter?period=30days
 
 # Get orders from specific date
-GET /api/orders/analytics/period?period=2024-01-15</code></pre>
+GET /api/orders/filter?period=2024-01-15</code></pre>
                     </div>
 
                     <h5 class="font-medium mb-2">Returned Value:</h5>
