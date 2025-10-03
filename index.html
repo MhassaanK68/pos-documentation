@@ -435,6 +435,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
         "category": "ramen",
         "is_available": true,
         "spicy_level": 0,
+        "cost_price": 30,
         "createdAt": "2024-01-01T00:00:00.000Z",
         "updatedAt": "2024-01-01T00:00:00.000Z"
       }
@@ -618,6 +619,64 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
                         <pre><code class="language-json">{
   "success": true,
   "message": "Menu item deleted successfully"
+}</code></pre>
+
+                    </div>
+                </div>
+
+                <!-- set cost price -->
+                 <div class="mb-8">
+                    <h1 class="mb-4 mt-8 text-lg font-bold leading-tight text-gray-900 md:text-xl">> Set Cost Price</h1>
+                    <div class="endpoint-header">
+                        <span class="method-delete">post</span>
+                        <span>&nbsp;/api/menu/:id</span>
+                        <span class="role-badge role-admin">Admin+</span>
+
+                    </div>
+                    <p class="text-gray-700 mb-3">updated the cost price of a menu item</p>
+
+                    <h5 class="font-medium mb-2">Parameters:</h5>
+                    <ul class="list-disc pl-5 mb-3 text-gray-700">
+                        <li><strong>Headers:</strong> Authorization: Bearer &lt;token&gt;</li>
+                        <li><strong>Path:</strong> id (integer, required) - Menu item ID</li>
+                        <li><strong>Body:</strong> cost_price (integer, required) - New Cost Price</li>
+                    </ul>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+    "cost_price": 30
+}</code></pre>
+
+                    </div>
+
+                    <h5 class="font-medium mb-2">Sample Request:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-http">DELETE /api/menu/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+
+                    </div>
+
+                    <h5 class="font-medium mb-2">Returned Value:</h5>
+                    <div class="code-block">
+                        <pre><code class="language-json">{
+    "success": true,
+    "message": "Cost price updated successfully",
+    "data": {
+        "menu_item": {
+            "id": 300047,
+            "name": "test",
+            "description": "test",
+            "price": "123.00",
+            "category": "Ramen",
+            "is_available": true,
+            "spicy_level": 1,
+            "current_stock": 12,
+            "cost_price": 30,
+            "createdAt": "2025-09-28T19:37:29.000Z",
+            "updatedAt": "2025-10-03T22:46:01.000Z"
+        }
+    }
 }</code></pre>
 
                     </div>
@@ -1303,6 +1362,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
             "category": "Burgers",
             "is_available": true,
             "spicy_level": 0,
+            "cost_price": 30,
             "current_stock": 5,
             "createdAt": "2024-01-15T10:00:00.000Z",
             "updatedAt": "2024-01-15T10:30:00.000Z"
@@ -1515,6 +1575,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
   "category": "ramen",
   "is_available": true,
   "spicy_level": 0,
+  "cost_price": 30,
   "createdAt": "2024-01-01T00:00:00.000Z",
   "updatedAt": "2024-01-01T00:00:00.000Z"
 }</code></pre>
